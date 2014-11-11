@@ -1,12 +1,28 @@
-{% load static form staticfiles %}
+{% load static from staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Datos Pesonales</title>
+	<title>Tu Nombre</title>
 	<link rel="stylesheet" href="{% static "css/estilos.css" %}">
 </head>
 <body>
-		
+	<h1>Ingresa Tu Nombre</h1>
+	<form action="" method="POST">
+		{% csrf_token %} 
+		{{form.nombre}}	{# Campo Nombre Del Formulario #}
+
+		{# Si Hay Errores Muestra el espan con Error #}	
+		{% if form.nombre.errors %}
+			<span>{{form.nombre.errors.as_text|cut:"*"}}</span>
+		{% endif %}
+
+		<button type="submit">Enviar</button>
+
+		{# Si El Formulario Se Envio Correctamente muestra la Alerta #}
+		{% if success %}
+			<span class="success">{{success}}</span>
+		{% endif %}
+	</form>
 </body>
 </html>
