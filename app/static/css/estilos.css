@@ -1,0 +1,80 @@
+body{
+	background: #fafafa;
+	font-family: Arial;
+	font-size: 16px;
+}
+button[type="submit"] {
+	-moz-box-shadow:inset 0px 39px 0px -24px #e67a73;
+	-webkit-box-shadow:inset 0px 39px 0px -24px #e67a73;
+	box-shadow:inset 0px 39px 0px -24px #e67a73;
+	background-color:#e4685d;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	border:1px solid #ffffff;
+	display:block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:arial;
+	font-size:17px;
+	padding:6px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #b23e35;
+	width: 620px;
+	margin: 1em auto;
+}
+button[type="submit"]:hover {
+	background-color:#eb675e;
+}
+button[type="submit"]:active {
+	position:relative;
+	top:1px;
+	outline: none
+}
+button[type="submit"]:focus {
+	outline: none
+}
+form{
+	width: 800px;
+	margin: 50px auto;
+}
+h1{
+	display: block;
+	text-align: center;
+}
+span{
+	color: #e4685d;
+	display: block;
+	margin: 1em;
+	text-align: center;
+}
+.Normal{
+	display: block;
+	font-size: 1em;
+	margin: 1em auto;
+	padding: 0.5em;
+	width: 600px;
+	border: 2px solid #2475E0;
+	border-radius: 5px;
+	color: black;
+}
+.Error{
+	display: block;
+	font-size: 1em;
+	margin: 0 auto;
+	padding: 0.5em;
+	width: 600px;
+	border: 2px solid #e4685d;
+	border-radius: 5px;
+	color: black;
+}
+.success{
+	display: block;
+	margin: 1px solid #467F50;
+	background: #32CC4D;
+	width: 600px;
+	margin: 1em auto;
+	color: white;
+	padding: 1em;
+	border-radius: 5px;
+}
