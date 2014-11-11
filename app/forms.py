@@ -3,7 +3,7 @@ from django import forms
 # Iniciamos Un formulario normal
 class DatosPersonalesForm(forms.Form):
 	# Campos de Formulario Normales 
-	nombre = forms.CharField(label=("Nombre"),
+	nombre = forms.CharField(
         max_length=255,
         widget=forms.TextInput(attrs={'class' : 'Normal'}), #Especificamos la clase css cuando el campo este normal
         required=False,
@@ -11,7 +11,7 @@ class DatosPersonalesForm(forms.Form):
 
 	# Declaramos al Constructor
 	def __init__(self, *args, **kwargs):
-		super(test_form, self).__init__(*args, **kwargs)
+		super(DatosPersonalesForm, self).__init__(*args, **kwargs)
 		# Si hay errores, va a recorrer todos los campos del formularioy por cada uno que encuentre con error, va a 
 		# Sustituir su clase en este caso Normal, Por la clase Error
 		if self.errors: 
