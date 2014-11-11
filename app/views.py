@@ -8,8 +8,8 @@ def FormularioView(request):
 	if request.method == 'POST': # Si el metodo es POST
 		form = DatosPersonalesForm(request.POST) # Iniciamos EL Formulario
 		if form.is_valid(): #Si Pasa todas las validaciones que definimos en el forms.py
-			return HttpResponseRedirect('/sucess')
+			form = DatosPersonalesForm()
+			return render_to_response(template, {'form':form,'success':'EL Formulario es Correcto'},context_instance=RequestContext(request))
 	else: #Si el metodo es get solo mostramos el formulario
 		form = DatosPersonalesForm()
-
 	return render_to_response(template, {'form':form},context_instance=RequestContext(request))
