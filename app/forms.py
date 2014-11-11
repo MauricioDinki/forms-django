@@ -4,8 +4,8 @@ from django import forms
 class DatosPersonalesForm(forms.Form):
 	# Campos de Formulario Normales 
 	nombre = forms.CharField(
-        max_length=255,
-        widget=forms.TextInput(attrs={'class' : 'Normal'}), #Especificamos la clase css cuando el campo este normal
+        max_length=30,
+        widget=forms.TextInput(attrs={'class' : 'Normal',}), #Especificamos la clase css cuando el campo este normal
         required=False,
     )
 
@@ -35,9 +35,10 @@ class DatosPersonalesForm(forms.Form):
 		# Validamos que el Campo No este Vacio
 		if len(nombre) == 0:
 			# Si esta vacio levantamos un error de validacion
-			raise forms.ValidationError("El Campo No Puede Estar Vacio")
+			raise forms.ValidationError("Ingresa Tu Nombre")
 			# Si el campo solo tiene espacios en blanco
 		elif nombre.isspace():
-			raise forms.ValidationError("El Campo No Puede Contener Solo Espacios en Blanco")
-		# Si todo es correcto regresamos el nombre
+			raise forms.ValidationError("Tu Nombre esta En Blanco")
 		return nombre
+		# Si todo es correcto regresamos el nombre
+		
