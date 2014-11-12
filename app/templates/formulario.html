@@ -3,11 +3,11 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Tu Nombre</title>
+	<title>Datos Personales</title>
 	<link rel="stylesheet" href="{% static "css/estilos.css" %}">
 </head>
 <body>
-	<h1>Ingresa Tu Nombre</h1>
+	<h1>Rellena Los Campos</h1>
 	<form action="" method="POST">
 		{% csrf_token %} 
 		{{form.nombre}}	{# Campo Nombre Del Formulario #}
@@ -16,6 +16,36 @@
 		{% if form.nombre.errors %}
 			<span>{{form.nombre.errors.as_text|cut:"*"}}</span>
 		{% endif %}
+		
+		{{form.estadoc}}
+
+		{% if form.estadoc.errors %}
+			<span>{{form.estadoc.errors.as_text|cut:"*"}}</span>
+		{% endif %}
+
+		<div class="check">
+			{% if form.es_humano.errors %}
+			<p class="humano">
+				No eres Humano
+			</p>
+			{% else %}
+			<p>
+				Acepto ser Humano
+			</p>
+			{% endif %}
+			
+			{{form.es_humano}}
+		</div>
+		{% if form.deporte.errors %}
+			<p class="deporte_w">
+				No seleccionaste un Deporte
+			</p>
+			{% else %}
+			<p class = "deporte">
+				Selecciona un Deporte
+			</p>
+			{% endif %}
+		{{form.deporte}}
 
 		<button type="submit">Enviar</button>
 
