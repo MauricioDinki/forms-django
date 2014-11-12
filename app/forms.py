@@ -9,6 +9,31 @@ class DatosPersonalesForm(forms.Form):
         required=False,
     )
 
+	estadoc = forms.ChoiceField(
+		required=False,
+		widget=forms.Select(attrs={'class': 'Normal',}),
+		choices=(
+			# El primer valor es su "value", el segundo es lo que se muestra en el html
+			('', 'Estado Civil'),
+		    ('SOL', 'Soltero'),
+		    ('CAS', 'Casado'),
+		    ('DIV', 'Divorciado'),
+		    ('VIU', 'Viudo'),
+		),
+	)
+
+	es_humano = forms.BooleanField()
+
+	deporte = forms.ChoiceField(
+		required=False,
+		widget=forms.RadioSelect(attrs={'class': 'Normal',}),
+		choices=(
+			('Futbol', 'Futbol'),
+		    ('Basquetball', 'Basquetball'),
+		    ('Beisball', 'Beisball'),
+		),
+	)
+
 	# Declaramos al Constructor
 	def __init__(self, *args, **kwargs):
 		super(DatosPersonalesForm, self).__init__(*args, **kwargs)
@@ -41,4 +66,22 @@ class DatosPersonalesForm(forms.Form):
 			raise forms.ValidationError("Tu Nombre esta En Blanco")
 		return nombre
 		# Si todo es correcto regresamos el nombre
+
+	def clean_estadoc(self):
+		estadoc = self.cleaned_data["estadoc"]
+		if len(estadoc) == 0: #La Opcion Estado Civil No Tiene Valor
+			raise forms.ValidationError("Selecciona Un Estado Civil")
+		return estadoc
+
+	def clean_es_humano(self):
+		es_humano = self.cleaned_data["es_humano"]
+		if not es_humano:
+			raise forms.ValidationError("No Eres Humano")
+		return es_humano
+
+	def clean_deporte(self):
+		deporte = self.cleaned_data["deporte"]
+		if not deporte:
+			raise forms.ValidationError("Selecciona Un Deporte")
+		return deporte
 		
