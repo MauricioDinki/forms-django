@@ -4,55 +4,75 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Datos Personales</title>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="{% static "css/estilos.css" %}">
+	<link rel="icon" type="image/png" href="{% static "img/icono.png" %}"/>
 </head>
 <body>
-	<h1>Rellena Los Campos</h1>
-	<form action="" method="POST">
-		{% csrf_token %} 
-		{{form.nombre}}	{# Campo Nombre Del Formulario #}
+	<section class="Container">
+		<article class="Form-Container">
+			<form action="" method="POST" class="Form-Personal">
+				{% csrf_token %}
+				
+				{# Titulo #}
+				{% if success %}
+					<h2 class="Title Success">
+						Rellena Los Campos
+					</h2>
+				{% elif form.errors %}
+					<h2 class="Title Reboot">
+						Rellena Los Campos
+					</h2>
+				{% else %}
+					<h2 class="Title Normal">
+						Rellena Los Campos
+					</h2>
+				{% endif %}
+				{# Titulo #}
 
-		{# Si Hay Errores Muestra el espan con Error #}	
-		{% if form.nombre.errors %}
-			<span>{{form.nombre.errors.as_text|cut:"*"}}</span>
-		{% endif %}
-		
-		{{form.estadoc}}
+				
+				{# Campo Nombre #}
+				{{form.nombre}}
+				{% if form.nombre.errors %}
+					<span class="Span-Error">{{form.nombre.errors.as_text|cut:"*"}}</span>
+				{% endif %}
+				{# Campo Nombre #}
+				
+				{# Campo Estado Civil #}
+				{{form.estadoc}}
+				{% if form.estadoc.errors %}
+					<span class="Span-Error">{{form.estadoc.errors.as_text|cut:"*"}}</span>
+				{% endif %}
+				{# Campo Estado Civil #}
+				
+				{# Campo Ser Humano #}
+				<div class="Checkbox-Container">
+					{% if form.es_humano.errors %}
+						<label for="es_humano" class="Checkbox-Label Text-Error">No Eres Humano</label>
+					{% else %}
+						<label for="es_humano" class="Checkbox-Label">Acepto Ser Humano</label>
+					{% endif %}
+					{{form.es_humano}}
+				</div>
+				{# Campo Ser Humano #}
 
-		{% if form.estadoc.errors %}
-			<span>{{form.estadoc.errors.as_text|cut:"*"}}</span>
-		{% endif %}
+				{# Campo Deporte #}
+				<div class="RadioButton-Container">
+					{% if form.deporte.errors %}
+						<span class="RadioButton-Label Text-Error">No Seleccionaste un Deporte</span>
+					{% else %}
+						<span class="RadioButton-Label">Selecciona un Deporte</span>
+					{% endif %}
+					{{form.deporte}}
+				</div>
+				{# Campo Deporte #}
+				
+				{# Boton Enviar #}
+				<button class="Button-Send"type="submit">Enviar</button>
+				{# Boton Enviar #}
 
-		<div class="check">
-			{% if form.es_humano.errors %}
-			<p class="humano">
-				No eres Humano
-			</p>
-			{% else %}
-			<p>
-				Acepto ser Humano
-			</p>
-			{% endif %}
-			
-			{{form.es_humano}}
-		</div>
-		{% if form.deporte.errors %}
-			<p class="deporte_w">
-				No seleccionaste un Deporte
-			</p>
-			{% else %}
-			<p class = "deporte">
-				Selecciona un Deporte
-			</p>
-			{% endif %}
-		{{form.deporte}}
-
-		<button type="submit">Enviar</button>
-
-		{# Si El Formulario Se Envio Correctamente muestra la Alerta #}
-		{% if success %}
-			<span class="success">{{success}}</span>
-		{% endif %}
-	</form>
+			</form>
+		</article>
+	</section>
 </body>
 </html>
