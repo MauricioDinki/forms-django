@@ -5,13 +5,13 @@ class DatosPersonalesForm(forms.Form):
 	# Campos de Formulario Normales 
 	nombre = forms.CharField(
         max_length=30,
-        widget=forms.TextInput(attrs={'class' : 'Normal',}), #Especificamos la clase css cuando el campo este normal
+        widget=forms.TextInput(attrs={'class' : 'Input-Text', 'placeholder':'Nombre'}), #Especificamos la clase css cuando el campo este normal
         required=False,
     )
 
 	estadoc = forms.ChoiceField(
 		required=False,
-		widget=forms.Select(attrs={'class': 'Normal',}),
+		widget=forms.Select(attrs={'class': 'Input-Select',}),
 		choices=(
 			# El primer valor es su "value", el segundo es lo que se muestra en el html
 			('', 'Estado Civil'),
@@ -22,7 +22,10 @@ class DatosPersonalesForm(forms.Form):
 		),
 	)
 
-	es_humano = forms.BooleanField()
+	es_humano = forms.BooleanField(
+		widget=forms.CheckboxInput(attrs={'id': 'es_humano',}),
+
+	)
 
 	deporte = forms.ChoiceField(
 		required=False,
@@ -42,15 +45,13 @@ class DatosPersonalesForm(forms.Form):
 		if self.errors: 
 		    for field in self.fields: 
 		        if field in self.errors:
-		        	# Si no queremos sustituir la clase, sino agregar una clase error debemos comentar la ultima linea
-		        	# y descomentar las siguinetes 3, solo va a obtener la/s clases de ese campo, lo suarda en la 
-		        	# Variable "classes", le agrega una clase Error y vuelve a asignar el atributo class al campo
+		        	# Si quereos remplazar todas las clases por otras, debemos comentar las siguientes 3 y descomentar la ultima 
 
-		            #classes = self.fields[field].widget.attrs.get('class', '')
-		            #classes += ' Error'
-		            # self.fields[field].widget.attrs['class'] = classes
+		            classes = self.fields[field].widget.attrs.get('class', '')
+		            classes += ' Error-Border'
+		            self.fields[field].widget.attrs['class'] = classes
 
-		            self.fields[field].widget.attrs['class'] = 'Error'
+		            # self.fields[field].widget.attrs['class'] = 'Error'
 
     # Usaremos Funciones Para Validar LOs Campos De Formulario
 
