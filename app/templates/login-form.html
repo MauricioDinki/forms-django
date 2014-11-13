@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+
+<section class="Login-container block-center">
+	<h1 class="Login-title background-red">Login</h1>
+	<form action="" method="post" class="Login-form">
+		{% csrf_token %}
+		{{form.username}}
+		{% if form.username.errors %}
+			<span class="span-error block-center background-red border-red">{{form.username.errors.as_text|cut:"*"}}</span>
+		{% endif %}
+		{{form.password}}
+		{% if form.password.errors %}
+			<span class="span-error block-center background-red border-red">{{form.password.errors.as_text|cut:"*"}}</span>
+		{% endif %}
+		{% if form.non_field_errors %}
+			<span class="span-error block-center background-red border-red">{{form.non_field_errors.as_text|cut:"*"}}</span>
+		{% endif %}
+		<button type="submit" class="Login-button block-center background-green border-green">Login</button>
+	</form>
+</section>
+	
+{% endblock content %}
