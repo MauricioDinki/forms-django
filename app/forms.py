@@ -3,21 +3,25 @@ from django.contrib.auth import authenticate
 
 # Mensajes de Error
 error_messages = {
-	    'invalid_login': ("Usuario o password incorrectos"),
-	    'inactive': ("Su cuenta fue inhabilitada"),
-	    'null_field' : ("Este campo es requerido"),
-	    'blank_field': ("El campo esta en blanco")
-    }
+    'invalid_login': ('Usuario o password incorrectos'),
+    'inactive': ('Su cuenta fue inhabilitada'),
+    'null_field' : ('Este campo es requerido'),
+    'blank_field': ('El campo esta en blanco'),
+    'null_option':('Debes seleccionar una opcion')
+}
 
-# Iniciamos Un formulario normal
-class DatosPersonalesForm(forms.Form):
-	# Campos de Formulario Normales 
+# Declaramos El Formulario
+class InformacionForm(forms.Form):
+
+	# Campo Nombre
 	nombre = forms.CharField(
         max_length=30,
-        widget=forms.TextInput(attrs={'class' : 'Input-Text', 'placeholder':'Nombre'}), #Especificamos la clase css cuando el campo este normal
+        # En el widget declaramos las clases del campo
+        widget=forms.TextInput(attrs={'class' : 'Input-Text', 'placeholder':'Nombre'}),
         required=False,
     )
 
+	# Select del Estado Civil
 	estadoc = forms.ChoiceField(
 		required=False,
 		widget=forms.Select(attrs={'class': 'Input-Select',}),
@@ -32,7 +36,7 @@ class DatosPersonalesForm(forms.Form):
 	)
 
 	es_humano = forms.BooleanField(
-		widget=forms.CheckboxInput(attrs={'id': 'es_humano',}),
+		widget=forms.CheckboxInput(),
 	)
 
 	deporte = forms.ChoiceField(
@@ -48,18 +52,16 @@ class DatosPersonalesForm(forms.Form):
 	# Declaramos al Constructor
 	def __init__(self, *args, **kwargs):
 		super(DatosPersonalesForm, self).__init__(*args, **kwargs)
-		# Si hay errores, va a recorrer todos los campos del formularioy por cada uno que encuentre con error, va a 
-		# Sustituir su clase en este caso Normal, Por la clase Error
+		# Si hay errores, va a recorrer todos los campos del formulario y por cada uno que encuentre con error, va a añadir la border-red a sus clases definidas
 		if self.errors: 
 		    for field in self.fields: 
 		        if field in self.errors:
 		        	# Si quereos remplazar todas las clases por otras, debemos comentar las siguientes 3 y descomentar la ultima 
-
 		            classes = self.fields[field].widget.attrs.get('class', '')
 		            classes += ' border-red'
 		            self.fields[field].widget.attrs['class'] = classes
 
-		            # self.fields[field].widget.attrs['class'] = 'Error'
+		            # self.fields[field].widget.attrs['class'] = 'nombre_de_la_clase'
 
     # Usaremos Funciones Para Validar Los Campos De Formulario
 
@@ -69,31 +71,32 @@ class DatosPersonalesForm(forms.Form):
 		# Validamos que el Campo No este Vacio
 		if len(nombre) == 0:
 			# Si esta vacio levantamos un error de validacion
-			raise forms.ValidationError("Ingresa Tu Nombre")
-			# Si el campo solo tiene espacios en blanco
+			raise forms.ValidationError(error_messages['null_field'],)
+		# Si el campo solo tiene espacios en blanco
 		elif nombre.isspace():
-			raise forms.ValidationError("Tu Nombre esta En Blanco")
+			raise forms.ValidationError(error_messages['blank_field'],)
 		return nombre
-		# Si todo es correcto regresamos el nombre
+		# Siempre regresamos el valor del campo
 
 	def clean_estadoc(self):
 		estadoc = self.cleaned_data["estadoc"]
 		if len(estadoc) == 0: #La Opcion Estado Civil No Tiene Valor
-			raise forms.ValidationError("Selecciona Un Estado Civil")
+			raise forms.ValidationError(error_messages['null_option'],)
 		return estadoc
 
 	def clean_es_humano(self):
 		es_humano = self.cleaned_data["es_humano"]
 		if not es_humano:
-			raise forms.ValidationError("No Eres Humano")
+			raise forms.ValidationError(error_messages['null_option'],)
 		return es_humano
 
 	def clean_deporte(self):
 		deporte = self.cleaned_data["deporte"]
 		if not deporte:
-			raise forms.ValidationError("Selecciona Un Deporte")
+			raise forms.ValidationError(error_messages['null_option'],)
 		return deporte
 
+# Declaramos El Formulario
 class LoginForm(forms.Form):
 
 	# Campo Username
