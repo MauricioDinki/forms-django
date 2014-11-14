@@ -1,9 +1,75 @@
 @import "normalize"
 @import "utils"
 @import "nib"
+@import "checkbox"
 
 body
 	background #C0C0C0
+
+.Info-buttonSubmit
+	border none
+	border-radius 5px
+	color #fff
+	padding 0.2em 0.5em
+	width 516px
+	
+	&:active
+		outline none
+		border none
+
+.Info-checkboxContainer
+	padding 0.2em 0.5em
+	position relative
+	width 516px
+		
+.Info-checkboxLabel
+	color #777
+	margin 0.3em 1em 0 0
+
+.Info-container
+	background white
+	border-radius 20px
+	margin-top 50px
+	overflow hidden
+	width 700px
+
+.Info-input
+	background-color: #eee;
+	border-radius 3px
+	color: #777;
+	padding 0.5em
+	width 500px
+
+.Info-radioContainer
+	padding 0.2em 0.5em
+	position relative
+	width 516px
+	
+	ul
+		padding 0
+		li
+			color #777
+			display inline-block
+			margin-right 1em
+			
+.Info-radioLabel
+	color #777
+	
+
+.Info-select
+	background-color: #eee;
+	border-radius 3px
+	color: #777;
+	padding 0.5em
+	width 516px
+	
+.Info-title
+	border-radius 20px 20px 0 0
+	color white
+	font-weight: 500
+	margin 0
+	padding .3em 0
+	text-align center
 
 .Login-button
 	border-radius 5px
@@ -21,10 +87,10 @@ body
 
 .Login-input
 	background-color: #eee;
+	border-radius 3px
 	color: #777;
 	padding 0.5em
 	width 300px
-	border-radius 3px
 
 .Login-title
 	border-radius 20px 20px 0 0
@@ -33,104 +99,3 @@ body
 	margin 0
 	padding .3em 0
 	text-align center
-/*body
-	background #272822
-
-input
-select
-	border-radius 5px
-	border 1px solid rgb(169, 169, 169)
-	
-	&:active
-		outline 0px
-
-.Button-Send
-	background-color #33cc77
-	border none
-	border-radius 5px
-	color #fff
-	display block
-	font-size 1em
-	margin 1em auto
-	padding 0.2em 0.5em
-	width 90%
-	
-	&:active
-		outline none
-		border none
-		
-.Checkbox-Container
-	display block
-	font-size 1em
-	margin 1em auto
-	padding 0.2em 0.5em
-	position relative
-	width 90%
-	
-	input
-		position absolute
-		left 11em
-		top 0.6em
-
-.Form-Container
-	height auto
-	margin-top 2em
-	width 100%
-
-.Form-Personal
-	background #FFF
-	margin 0 auto
-	overflow hidden
-	width 0%
-
-.Input-Text
-	background transparent
-	display block
-	font-size 1em
-	margin 1em auto
-	padding 0.2em 0.5em
-	width 90%
-
-.Input-Select
-	background transparent
-	display block
-	font-size 1em
-	margin 1em auto
-	padding 0.2em 0.5em
-	width 90% + 3px
-
-.RadioButton-Container
-	display block
-	font-size 1em
-	margin 1em auto
-	padding 0.2em 0.5em
-	width 90%
-	
-	ul
-		padding 0
-		li
-			display inline-block
-
-
-
-.Span-Error	
-	display block
-	font-size 1em
-	margin 1em auto
-	padding 0.2em 0.5em
-	width 90%
-	border 1px solid #FF2C32
-	text-align center
-	padding 0.5em
-	border-radius 5px
-	background #FF2C32
-	color white
-
-
-	
-.Title
-	color #FFF
-	font-family Arial
-	margin 0
-	padding 0.6em
-	text-align center*/
