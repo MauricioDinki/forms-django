@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %} Informacion Basica {% endblock title %}
+
+{% block content %}
+
+<section class="Info-container block-center">
+	{# Titulo #}
+	{% if success %}
+		<h2 class="Info-title background-green">
+			Formulario Correcto
+		</h2>
+	{% elif form.errors %}
+		<h2 class="Info-title background-red">
+			Formulario Erroneo
+		</h2>
+	{% else %}
+		<h2 class="Info-title background-orange">
+			Datos Personales
+		</h2>
+	{% endif %}
+	{# Titulo #}
+	<form action="" class="info-Form" method="post">
+		{% csrf_token %}
+
+		{# Campo Nombre #}
+		{{form.nombre}}
+		{% if form.nombre.errors %}
+			<span class="span-error-large block-center background-red border-red">{{form.nombre.errors.as_text|cut:"*"}}</span>
+		{% endif %}
+		{# Campo Nombre #}
+
+		{# Campo Estado Civil #}
+		{{form.estadoc}}
+		{% if form.estadoc.errors %}
+			<span class="span-error-large block-center background-red border-red">{{form.estadoc.errors.as_text|cut:"*"}}</span>
+		{% endif %}
+		{# Campo Estado Civil #}
+		
+		{# Campo Ser Humano #}
+		<div class="Info-checkboxContainer block-center">
+			{% if form.es_humano.errors %}
+				<label for="checkbox" class="Info-checkboxLabel text-red">No Eres Humano</label>
+			{% else %}
+				<label for="checkbox" class="Info-checkboxLabel">Acepto Ser Humano</label>
+			{% endif %}
+			{{form.es_humano}}
+			<label for="checkbox" name="checkbox_lbl" class="css-label lrg web-two-style"></label>
+		</div>
+		{# Campo Ser Humano #}
+		
+		{# Campo Deporte #}
+		<div class="Info-radioContainer block-center">
+			{% if form.deporte.errors %}
+				<span class="Info-radioLabel text-red">No Seleccionaste un Deporte</span>
+			{% else %}
+				<span class="Info-radioLabel">Selecciona un Deporte</span>
+			{% endif %}
+			{{form.deporte}}
+		</div>
+		{# Campo Deporte #}
+
+		{# Boton Enviar #}
+		<button class="Info-buttonSubmit background-green block-center"type="submit">Enviar</button>
+		{# Boton Enviar #}
+	</form>
+</section>
+
+{% endblock content %}
