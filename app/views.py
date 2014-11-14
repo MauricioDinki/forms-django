@@ -1,4 +1,4 @@
-from .forms import InformacionForm,LoginForm
+from .forms import InformacionForm,LoginForm,RegisterForm
 from django.contrib.auth import login
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -30,5 +30,10 @@ class LoginView(FormView):
 		login(self.request,form.user_cache)
 		# llamamos al la funcion form_valid() para que nos redireccione a la url que ya definimos
 		return super(LoginView,self).form_valid(form)
+
+class RegisterView(FormView):
+	template_name = 'register-form.html'
+	form_class = RegisterForm
+	success_url = '/success'
 
 
