@@ -17,14 +17,14 @@ class InformacionForm(forms.Form):
 	nombre = forms.CharField(
         max_length=30,
         # En el widget declaramos las clases del campo
-        widget=forms.TextInput(attrs={'class' : 'Input-Text', 'placeholder':'Nombre'}),
+        widget=forms.TextInput(attrs={'class' : 'block-center Info-input', 'placeholder':'Nombre'}),
         required=False,
     )
 
 	# Select del Estado Civil
 	estadoc = forms.ChoiceField(
 		required=False,
-		widget=forms.Select(attrs={'class': 'Input-Select',}),
+		widget=forms.Select(attrs={'class': 'block-center Info-select',}),
 		choices=(
 			# El primer valor es su "value", el segundo es lo que se muestra en el html
 			('', 'Estado Civil'),
@@ -34,14 +34,13 @@ class InformacionForm(forms.Form):
 		    ('VIU', 'Viudo'),
 		),
 	)
-
 	es_humano = forms.BooleanField(
-		widget=forms.CheckboxInput(),
+		widget=forms.CheckboxInput(attrs={'id':'checkbox','class':'css-checkbox lrg',}),
 	)
 
 	deporte = forms.ChoiceField(
 		required=False,
-		widget=forms.RadioSelect(attrs={'class': 'Normal',}),
+		widget=forms.RadioSelect(attrs={'class': 'Info-radio',}),
 		choices=(
 			('Futbol', 'Futbol'),
 		    ('Basquetball', 'Basquetball'),
@@ -51,8 +50,8 @@ class InformacionForm(forms.Form):
 
 	# Declaramos al Constructor
 	def __init__(self, *args, **kwargs):
-		super(DatosPersonalesForm, self).__init__(*args, **kwargs)
-		# Si hay errores, va a recorrer todos los campos del formulario y por cada uno que encuentre con error, va a añadir la border-red a sus clases definidas
+		super(InformacionForm, self).__init__(*args, **kwargs)
+		# Si hay errores, va a recorrer todos los campos del formulario y por cada uno que encuentre con error, va a poner border-red a sus clases definidas
 		if self.errors: 
 		    for field in self.fields: 
 		        if field in self.errors:
