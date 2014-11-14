@@ -288,6 +288,18 @@ class RegisterForm(forms.Form):
 			raise forms.ValidationError(error_messages['password_mismatch'],)
 		return password_2
 
+	def save(self):
+		
+		username = self.cleaned_data.get("username")
+		email = self.cleaned_data.get("email")
+		password = self.cleaned_data.get("password")
+		nombre = self.cleaned_data.get("nombre")
+		apellidos = self.cleaned_data.get("apellidos")
+		user = User.objects.create_user(username, email, password)
+		user.first_name = nombre
+		user.last_name = apellidos
+		user.save()
+
 		
 
 		
