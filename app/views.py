@@ -36,4 +36,7 @@ class RegisterView(FormView):
 	form_class = RegisterForm
 	success_url = '/success'
 
+	def form_valid(self,form):
+		form.save()
+		return super(RegisterView,self).form_valid(form)
 
