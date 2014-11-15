@@ -31,6 +31,7 @@ class LoginView(FormView):
 		# llamamos al la funcion form_valid() para que nos redireccione a la url que ya definimos
 		return super(LoginView,self).form_valid(form)
 
+# Registro Usando FormView
 class RegisterView(FormView):
 	template_name = 'register-form.html'
 	form_class = RegisterForm
@@ -38,5 +39,6 @@ class RegisterView(FormView):
 
 	def form_valid(self,form):
 		form.save()
+		login(self.request,form.user_cache)
 		return super(RegisterView,self).form_valid(form)
 
