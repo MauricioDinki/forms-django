@@ -1,21 +1,13 @@
 # -*- encoding: utf-8 -*-
 
+from .models import Persona
+from .validations import *
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from .models import Persona
-from .validations import validate_null,validate_password,validate_username,validate_email
 from django.forms import Field
 
 # Mensajes de Error
-custom_error_messages = {
-    'invalid_login': ('Usuario o contraseña incorrectos'),
-    'inactive': ('Su cuenta fue inhabilitada'),
-    'blank_field': ('El campo esta en blanco'),
-    'null_option':('Debes seleccionar una opcion'),
-    'password_mismatch':('La contraseñas no coinciden'),
-}
-
 default_error_messages = {
     'required': 'Este campo no puede estar vacio',
 }
@@ -25,16 +17,18 @@ class InformacionForm(forms.Form):
 
 	# Campo Nombre
 	nombre = forms.CharField(
-        max_length=30,
+		# Hacemos que los mensajes de error sean los que definimos
+		error_messages=default_error_messages,
+		# Maxima lonngitud
+        max_length=20,
+        # Si es requerido
+        required=True,
         # En el widget declaramos las clases del campo
         widget=forms.TextInput(attrs={'class' : 'block-center Info-input', 'placeholder':'Nombre'}),
-        required=False,
     )
 
 	# Select del Estado Civil
 	estadoc = forms.ChoiceField(
-		required=False,
-		widget=forms.Select(attrs={'class': 'block-center Info-select',}),
 		choices=(
 			# El primer valor es su "value", el segundo es lo que se muestra en el html
 			('', 'Estado Civil'),
@@ -43,19 +37,28 @@ class InformacionForm(forms.Form):
 		    ('DIV', 'Divorciado'),
 		    ('VIU', 'Viudo'),
 		),
+		error_messages=default_error_messages,
+		required=True,
+		widget=forms.Select(attrs={'class': 'block-center Info-select',}),
 	)
+
+	# Campo de comprobacion de humano
 	es_humano = forms.BooleanField(
+		error_messages=default_error_messages,
+		required=True,
 		widget=forms.CheckboxInput(attrs={'id':'checkbox','class':'css-checkbox lrg',}),
 	)
 
+	# Seleccion del deporte
 	deporte = forms.ChoiceField(
-		required=False,
-		widget=forms.RadioSelect(attrs={'class': 'Info-radio',}),
 		choices=(
 			('Futbol', 'Futbol'),
-		    ('Basquetball', 'Basquetball'),
-		    ('Beisball', 'Beisball'),
+			('Basquetball', 'Basquetball'),
+			('Beisball', 'Beisball'),
 		),
+		error_messages=default_error_messages,
+		required=True,
+		widget=forms.RadioSelect(attrs={'class': 'Info-radio',}),
 	)
 
 	# Declaramos al Constructor
@@ -73,52 +76,31 @@ class InformacionForm(forms.Form):
 		            # self.fields[field].widget.attrs['class'] = 'nombre_de_la_clase'
 
     # Usaremos Funciones Para Validar Los Campos De Formulario
-
+    # Las validaciones de cada campo deben de tener nombre clean_<nombre del campo>
 	def clean_nombre(self):
-		# Obtenemos El Contenido de un campo del cleaned data y lo asignamos a una variable 
-		nombre = self.cleaned_data['nombre']
-		# Validamos que el Campo No este Vacio
-		if len(nombre) == 0:
-			# Si esta vacio levantamos un error de validacion
-			raise forms.ValidationError(error_messages['null_field'],)
-		# Si el campo solo tiene espacios en blanco
-		elif nombre.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
+		# Obtenemos el contenido de un campo del cleaned data y lo asignamos a una variable 
+		nombre = self.cleaned_data.get('nombre')
+		# Le enviamos el nombre a la funcion validate_null que esta en validations.py
+		validate_null(nombre)
+		# Siempre regresamos el valor que tomamos del cleaned_data
 		return nombre
-		# Siempre regresamos el valor del campo
-
-	def clean_estadoc(self):
-		estadoc = self.cleaned_data["estadoc"]
-		if len(estadoc) == 0: #La Opcion Estado Civil No Tiene Valor
-			raise forms.ValidationError(error_messages['null_option'],)
-		return estadoc
-
-	def clean_es_humano(self):
-		es_humano = self.cleaned_data["es_humano"]
-		if not es_humano:
-			raise forms.ValidationError(error_messages['null_option'],)
-		return es_humano
-
-	def clean_deporte(self):
-		deporte = self.cleaned_data["deporte"]
-		if not deporte:
-			raise forms.ValidationError(error_messages['null_option'],)
-		return deporte
 
 # Declaramos El Formulario
 class LoginForm(forms.Form):
 
 	# Campo Username
     username = forms.CharField(
-    	required=False,
-    	max_length=30,
+		error_messages=default_error_messages,
+    	max_length=20,
+    	required=True,
     	widget=forms.TextInput(attrs={'class':'Login-input block-center','placeholder':'username'}),
     )
 
     # Campo Password
     password = forms.CharField(
-    	required=False,
-    	max_length=30,
+		error_messages=default_error_messages,
+    	max_length=20,
+    	required=True,
     	# El widget debe ser PasswordInput para que aparescan los puntitos y no se va la contrasena
     	widget=forms.PasswordInput(attrs={'class':'Login-input block-center','placeholder':'password'}),
 	)
@@ -128,7 +110,6 @@ class LoginForm(forms.Form):
         super(LoginForm, self).__init__(*args, **kwargs)
         # El user_cache es donde se almacena el usuario listo para loguear si pasa las validaciones
         self.user_cache = None
-        # Para poner una clase extra a los campos
         if self.errors: 
 		    for field in self.fields: 
 		        if field in self.errors:
@@ -138,20 +119,14 @@ class LoginForm(forms.Form):
 
     # Validamos El Username
     def clean_username(self):
-		username = self.cleaned_data['username']
-		if len(username) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif username.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
+		username = self.cleaned_data.get('username')
+		validate_null(username)
 		return username
 
 	# Validamos el password
     def clean_password(self):
-		password = self.cleaned_data['password']
-		if len(password) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif password.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
+		password = self.cleaned_data.get('password')
+		validate_null(password)
 		return password
 
 	# Es importante que la funcion se llame clean por que es la validacion general del formulario, y es aqui donde validamos que el usuario exista
@@ -166,10 +141,10 @@ class LoginForm(forms.Form):
             self.user_cache = authenticate(username=username, password=password)
             # Si no existe el usuario, user_cache estara vacio y mandamos el error
             if self.user_cache is None:
-                raise forms.ValidationError(error_messages['invalid_login'],)
+                raise forms.ValidationError(custom_error_messages['invalid_login'],)
             # Comprobamos que el Usuario este activo
             elif not self.user_cache.is_active:
-                raise forms.ValidationError(error_messages['inactive'])
+                raise forms.ValidationError(custom_error_messages['inactive'])
         # Siempre regresamos el cleaned_data
         return self.cleaned_data
             
@@ -191,7 +166,7 @@ class RegisterForm(forms.Form):
 			'invalid':('Ingresa una cuenta de correo valida'),
 			'required': default_error_messages['required']
 		},
-		max_length=20,
+		max_length=30,
 		required=True,
 		widget=forms.TextInput(attrs={'placeholder':'Email'}),
 	)
@@ -238,30 +213,52 @@ class RegisterForm(forms.Form):
 		widget=forms.PasswordInput(attrs={'placeholder':'Repetir Contraseña'}),
 	)
 
+	def __init__(self, *args, **kwargs):
+		super(RegisterForm, self).__init__(*args, **kwargs)
+		self.user_cache = None
+		if self.errors: 
+		    for field in self.fields: 
+		        if field in self.errors:
+		            classes = self.fields[field].widget.attrs.get('class', '')
+		            classes += ' border-red'
+		            self.fields[field].widget.attrs['class'] = classes
+
+
 	def clean_apellidos(self):
 		apellidos = self.cleaned_data.get('apellidos')
 		validate_null(apellidos)
+		return apellidos
 
 	def clean_edad(self):
 		edad = self.cleaned_data.get('edad')
 		validate_null(edad)
+		return edad
 
 	def clean_email(self):
 		email = self.cleaned_data.get('email')
 		validate_email(email)
+		return email
 
 	def clean_nombre(self):
 		nombre = self.cleaned_data.get('nombre')
 		validate_null(nombre)
+		return nombre
+
+	def clean_password_1(self):
+		password_1 = self.cleaned_data.get('password_1')
+		validate_null(password_1)
+		return password_1
 
 	def clean_password_2(self):
 		password_1 = self.cleaned_data.get('password_1')
 		password_2 = self.cleaned_data.get("password_2")
 		validate_password(password_1,password_2)
+		return password_1 and password_2
 
 	def clean_username(self):
 		username = self.cleaned_data.get('username')
 		validate_username(username)
+		return username
 
 	def save(self):
 		# Obtenemos los datos del Formulario
@@ -282,7 +279,5 @@ class RegisterForm(forms.Form):
 		newPersona = Persona(user=user,edad=edad )
 		newPersona.save()
 
-		
-
-		
-
+		# Lo autentificamos y no tenemos que validar que existe por que lo acabamos de registrar
+		self.user_cache = authenticate(username=username, password=password)
