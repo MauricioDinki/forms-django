@@ -3,15 +3,21 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from .models import Persona
+from .validations import validate_null,validate_password,validate_username,validate_email
+from django.forms import Field
 
 # Mensajes de Error
-error_messages = {
-    'invalid_login': ('Usuario o password incorrectos'),
+custom_error_messages = {
+    'invalid_login': ('Usuario o contraseña incorrectos'),
     'inactive': ('Su cuenta fue inhabilitada'),
-    'null_field' : ('Este campo es requerido'),
     'blank_field': ('El campo esta en blanco'),
     'null_option':('Debes seleccionar una opcion'),
-    'password_mismatch':('La Contraseñas No Coinciden'),
+    'password_mismatch':('La contraseñas no coinciden'),
+}
+
+default_error_messages = {
+    'required': 'Este campo no puede estar vacio',
 }
 
 # Declaramos El Formulario
@@ -172,133 +178,109 @@ class RegisterForm(forms.Form):
 
 	# Campo Username
 	username = forms.CharField(
-    	required=False,
-    	max_length=30,
+		# Con esto podemos cambiar los mensajes de error de las validaciones por defecto como required
+		error_messages=default_error_messages,
+    	max_length=20,
+    	required=True,
     	widget=forms.TextInput(attrs={'placeholder':'Username'}),
     )
 
 	# Campo Email
 	email = forms.EmailField(
-		required=False,
-		max_length=30,
-		widget=forms.TextInput(attrs={'placeholder':'Username'}),
+		error_messages={
+			'invalid':('Ingresa una cuenta de correo valida'),
+			'required': default_error_messages['required']
+		},
+		max_length=20,
+		required=True,
+		widget=forms.TextInput(attrs={'placeholder':'Email'}),
 	)
 
 	# Campo Nombre
 	nombre = forms.CharField(
-		required=False,
-		max_length=30,
+		error_messages=default_error_messages,
+		max_length=20,
+		required=True,
 		widget=forms.TextInput(attrs={'placeholder':'Nombre'}),
 	)
 
 	# Campo Apellidos
 	apellidos = forms.CharField(
-		required=False,
-		max_length=30,
+		error_messages=default_error_messages,
+		max_length=20,
+		required=True,
 		widget=forms.TextInput(attrs={'placeholder':'Apellidos'}),
 	)
 
 	# Campo Edad
-	edad = forms.CharField(
-		required=False,
+	edad = forms.IntegerField(
+		error_messages={
+			'invalid':('La Edad Debe Ser Un Numero'),
+			'required': default_error_messages['required']
+		},
+		required=True,
 		widget=forms.TextInput(attrs={'placeholder':'Edad'}),
 	)
 
 	# Campo Password
 	password_1 = forms.CharField(
-		required=False,
+		error_messages=default_error_messages,
 		max_length=30,
-		widget=forms.PasswordInput(attrs={'placeholder':'password_1'}),
+		required=True,
+		widget=forms.PasswordInput(attrs={'placeholder':'Contraseña'}),
 	)
 
+	# Campo De Comprobacion de Password
 	password_2 = forms.CharField(
-		required=False,
+		error_messages=default_error_messages,
 		max_length=30,
-		widget=forms.PasswordInput(attrs={'placeholder':'password_2'}),
+		required=True,
+		widget=forms.PasswordInput(attrs={'placeholder':'Repetir Contraseña'}),
 	)
-
-	def clean_username(self):
-		username = self.cleaned_data['username']
-		if len(username) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif username.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
-		elif username:
-			try:
-				user = User.objects.get(username = username)
-			except User.DoesNotExist:
-				return username
-
-		raise forms.ValidationError('Ese Usuario Ya Existe')
-
-	def clean_email(self):
-		email = self.cleaned_data['email']
-		if len(email) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif email.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
-		elif email:
-			try:
-				user = User.objects.get(email = email)
-			except User.DoesNotExist:
-				return email
-
-		raise forms.ValidationError('Ese Email Ya Esta Ocupado')
-
-	def clean_nombre(self):
-		nombre = self.cleaned_data['nombre']
-		if len(nombre) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif nombre.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
-		return nombre
 
 	def clean_apellidos(self):
-		apellidos = self.cleaned_data['apellidos']
-		if len(apellidos) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif apellidos.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
-		return apellidos
+		apellidos = self.cleaned_data.get('apellidos')
+		validate_null(apellidos)
 
 	def clean_edad(self):
-		edad = self.cleaned_data['edad']
-		if len(edad) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif edad.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
-		return edad
+		edad = self.cleaned_data.get('edad')
+		validate_null(edad)
 
-	def clean_password_1(self):
-		password_1 = self.cleaned_data['password_1']
-		if len(password_1) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif password_1.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
-		return password_1
+	def clean_email(self):
+		email = self.cleaned_data.get('email')
+		validate_email(email)
+
+	def clean_nombre(self):
+		nombre = self.cleaned_data.get('nombre')
+		validate_null(nombre)
 
 	def clean_password_2(self):
-		password_1 = self.cleaned_data.get("password_1")
+		password_1 = self.cleaned_data.get('password_1')
 		password_2 = self.cleaned_data.get("password_2")
-		if len(password_2) == 0:
-			raise forms.ValidationError(error_messages['null_field'],)
-		elif password_2.isspace():
-			raise forms.ValidationError(error_messages['blank_field'],)
-		elif password_1 and password_2 and password_1 != password_2:
-			raise forms.ValidationError(error_messages['password_mismatch'],)
-		return password_2
+		validate_password(password_1,password_2)
+
+	def clean_username(self):
+		username = self.cleaned_data.get('username')
+		validate_username(username)
 
 	def save(self):
-		
+		# Obtenemos los datos del Formulario
 		username = self.cleaned_data.get("username")
 		email = self.cleaned_data.get("email")
-		password = self.cleaned_data.get("password")
+		password = self.cleaned_data.get("password_2")
 		nombre = self.cleaned_data.get("nombre")
 		apellidos = self.cleaned_data.get("apellidos")
+		edad = self.cleaned_data.get("edad")
+
+		# Creamos El Usuario
 		user = User.objects.create_user(username, email, password)
 		user.first_name = nombre
 		user.last_name = apellidos
 		user.save()
+
+		# Añadimos al modelo Persona nuestro Usuario
+		newPersona = Persona(user=user,edad=edad )
+		newPersona.save()
 
 		
 
