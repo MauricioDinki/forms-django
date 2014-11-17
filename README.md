@@ -1,4 +1,8 @@
 <h1>Formularios En Django</h1>
 <p>
-	En este ejemplo muestro como validar campos de formulario en django y como cambiar la clase del campo por una de "error" que es muy util en diseño sin tener que desplegar el formulario como .as_table o .as_p
+<h2>Requerimientos</h2>
+<ul>
+<li>Entorno con django 1.7</li>
+</ul>
+<h2>¿Como usar?<h2>
 </p>
