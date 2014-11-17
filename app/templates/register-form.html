@@ -3,11 +3,48 @@
 {% block title %} Registro {% endblock title %}
 
 {% block content %}
-
-<form action="" method="post">
-	{% csrf_token %}
-	{{form.as_p}}
-	<button type="submit">Registrarse</button>
-</form>
+<section class="Register-container block-center">
+	<h1 class="Register-title background-red">¡Registrate!</h1>
+	<form action="" method="post" class="Register-form">
+		<article class="Register-formIzquierdo">
+			{{form.username}}
+			{% if form.username.errors %}
+				<span class="span-error block-center background-red border-red">{{form.username.errors.as_text|cut:"*"}}</span>
+			{% endif %}
+			{{form.nombre}}
+			{% if form.nombre.errors %}
+				<span class="span-error block-center background-red border-red">{{form.nombre.errors.as_text|cut:"*"}}</span>
+			{% endif %}
+			{{form.edad}}
+			{% if form.edad.errors %}
+				<span class="span-error block-center background-red border-red">{{form.edad.errors.as_text|cut:"*"}}</span>
+			{% endif %}
+			{{form.password_1}}
+			{% if form.password_1.errors %}
+				<span class="span-error block-center background-red border-red">{{form.password_1.errors.as_text|cut:"*"}}</span>
+			{% endif %}
+		</article>
+		<article class="Register-formDerecho">
+			{{form.email}}
+			{% if form.email.errors %}
+				<span class="span-error block-center background-red border-red">{{form.email.errors.as_text|cut:"*"}}</span>
+			{% endif %}
+			{{form.apellidos}}
+			{% if form.apellidos.errors %}
+				<span class="span-error block-center background-red border-red">{{form.apellidos.errors.as_text|cut:"*"}}</span>
+			{% endif %}
+			{{form.genero}}
+			{% if form.genero.errors %}
+				<span class="span-error block-center background-red border-red">{{form.genero.errors.as_text|cut:"*"}}</span>
+			{% endif %}
+			{{form.password_2}}
+			{% if form.password_2.errors %}
+				<span class="span-error block-center background-red border-red">{{form.password_2.errors.as_text|cut:"*"}}</span>
+			{% endif %}
+		</article>
+		{% csrf_token %}
+		<button type="submit" class="Register-button block-center background-green border-green">Registrarse</button>
+	</form>
+</section>
 	
 {% endblock content %}
