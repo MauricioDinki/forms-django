@@ -2,7 +2,7 @@ from .forms import InformacionForm,LoginForm,RegisterForm
 from django.contrib.auth import login
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.generic import FormView
+from django.views.generic import FormView,TemplateView
 
 # Formulario Usando FunctionView
 def FormularioView(request):
@@ -41,4 +41,11 @@ class RegisterView(FormView):
 		form.save()
 		login(self.request,form.user_cache)
 		return super(RegisterView,self).form_valid(form)
+
+# Una forma rapida de mostrar una plantilla estatica es con un templateview solo le decimos el nombre de la plantilla 
+class IndexView(TemplateView):
+	template_name = "index.html"
+
+class SuccessView(TemplateView):
+	template_name = "success.html"
 
