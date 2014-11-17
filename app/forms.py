@@ -157,7 +157,7 @@ class RegisterForm(forms.Form):
 		error_messages=default_error_messages,
     	max_length=20,
     	required=True,
-    	widget=forms.TextInput(attrs={'placeholder':'Username'}),
+    	widget=forms.TextInput(attrs={'class':'Register-input block-center','placeholder':'Username'}),
     )
 
 	# Campo Email
@@ -168,7 +168,7 @@ class RegisterForm(forms.Form):
 		},
 		max_length=30,
 		required=True,
-		widget=forms.TextInput(attrs={'placeholder':'Email'}),
+		widget=forms.TextInput(attrs={'class':'Register-input block-center','placeholder':'Email'}),
 	)
 
 	# Campo Nombre
@@ -176,7 +176,7 @@ class RegisterForm(forms.Form):
 		error_messages=default_error_messages,
 		max_length=20,
 		required=True,
-		widget=forms.TextInput(attrs={'placeholder':'Nombre'}),
+		widget=forms.TextInput(attrs={'class':'Register-input block-center','placeholder':'Nombre'}),
 	)
 
 	# Campo Apellidos
@@ -184,7 +184,7 @@ class RegisterForm(forms.Form):
 		error_messages=default_error_messages,
 		max_length=20,
 		required=True,
-		widget=forms.TextInput(attrs={'placeholder':'Apellidos'}),
+		widget=forms.TextInput(attrs={'class':'Register-input block-center','placeholder':'Apellidos'}),
 	)
 
 	# Campo Edad
@@ -194,7 +194,19 @@ class RegisterForm(forms.Form):
 			'required': default_error_messages['required']
 		},
 		required=True,
-		widget=forms.TextInput(attrs={'placeholder':'Edad'}),
+		widget=forms.TextInput(attrs={'class':'Register-input block-center','placeholder':'Edad'}),
+	)
+
+	genero = forms.ChoiceField(
+		choices=(
+			# El primer valor es su "value", el segundo es lo que se muestra en el html
+			('', 'Genero'),
+		    ('Masculino', 'Masculino'),
+		    ('Femenino', 'Femenino'),
+		),
+		error_messages=default_error_messages,
+		required=True,
+		widget=forms.Select(attrs={'class': 'block-center Register-select',}),
 	)
 
 	# Campo Password
@@ -202,7 +214,7 @@ class RegisterForm(forms.Form):
 		error_messages=default_error_messages,
 		max_length=30,
 		required=True,
-		widget=forms.PasswordInput(attrs={'placeholder':'Contraseña'}),
+		widget=forms.PasswordInput(attrs={'class':'Register-input block-center','placeholder':'Contraseña'}),
 	)
 
 	# Campo De Comprobacion de Password
@@ -210,7 +222,7 @@ class RegisterForm(forms.Form):
 		error_messages=default_error_messages,
 		max_length=30,
 		required=True,
-		widget=forms.PasswordInput(attrs={'placeholder':'Repetir Contraseña'}),
+		widget=forms.PasswordInput(attrs={'class':'Register-input block-center','placeholder':'Repetir Contraseña'}),
 	)
 
 	def __init__(self, *args, **kwargs):
@@ -268,6 +280,7 @@ class RegisterForm(forms.Form):
 		nombre = self.cleaned_data.get("nombre")
 		apellidos = self.cleaned_data.get("apellidos")
 		edad = self.cleaned_data.get("edad")
+		genero = self.cleaned_data.get("genero")
 
 		# Creamos El Usuario
 		user = User.objects.create_user(username, email, password)
@@ -276,7 +289,7 @@ class RegisterForm(forms.Form):
 		user.save()
 
 		# Añadimos al modelo Persona nuestro Usuario
-		newPersona = Persona(user=user,edad=edad )
+		newPersona = Persona(user=user,edad=edad,genero=genero )
 		newPersona.save()
 
 		# Lo autentificamos y no tenemos que validar que existe por que lo acabamos de registrar
