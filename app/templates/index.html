@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %} Formularios en Django {% endblock title %}
+
+{% block content %}
+	
+<section class="Index-container block-center">
+	<h1 class="Index-title background-orange">Manejo de Formularios en Django</h1>
+	<p class="Index-information">
+		En esta aplicacion muestro el funcionamiento de los formularios en django poniendo como ejemplo un login, un formulario de registro y un formulario con algunos campos de datos personales, asi como el uso de un function view  para manejar un formulario y la forma recomendada que es  con un form view.
+		Tambien muestro validaciones personalizadas por cada campo y por el formulario en general, como cambiar los mensajes de error y algunos metodos de validacion de python que son muy utiles
+
+	</p>
+	<p class="Index-linkContainer block-center">
+		<a href="{% url 'datos_personales' %}" class='Index-link background-red'>Formulario de Datos Personales</a> 
+		<a href="{% url 'login' %}" class='Index-link background-red'>Formulario de Login</a> 
+		<a href="{% url 'register' %}" class='Index-link background-red'>Formulario de Registro</a> 
+	</p>
+</section>
+
+{% endblock content %}
