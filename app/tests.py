@@ -7,4 +7,4 @@ class CoolTest(TestCase):
     def test_function(self):
         """Test passing."""
         print("\n Test function")
-        self.assertEqual(True, True)
+        self.assertEqual(False, True)
