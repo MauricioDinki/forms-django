@@ -1,0 +1,17 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/project
+
+permissions:
+  - object: /home/ubuntu/project
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  ApplicationStart:
+    - location: scripts/start_application.sh
+      timeout: 6000
+      runas: ubuntu
