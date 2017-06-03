@@ -5,7 +5,7 @@ install: "pip install -r requirements.txt"
 script: python manage.py test
 before_deploy:
   - cd ..
-  - zip -r forms.zip app forms manage.py requirements.txt appspec.yml || true
+  - zip -r forms.zip app forms scripts manage.py requirements.txt appspec.yml || true
   - mkdir -p "upload"
   - mv forms.zip upload/forms.zip || true
 
