@@ -3,3 +3,8 @@ os: linux
 files:
   - source: ./
     destination: /home/ubuntu/forms
+hooks:
+  BeforeInstall:
+    - location: scripts/clean_instance.sh
+      timeout: 6000
+      runas: root
