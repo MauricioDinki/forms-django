@@ -1,16 +1,5 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ec2-user/www/project
-permissions:
-  - object: /home/ec2-user/www
-    pattern: "**"
-    owner: ec2-user
-    group: ec2-user
-
-hooks:
-  ApplicationStart:
-    - location: scripts/start_application.sh
-      timeout: 6000
-      runas: ec2-user
+  - source: ./
+    destination: /home/ubuntu/forms
