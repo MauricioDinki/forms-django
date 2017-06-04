@@ -8,3 +8,7 @@ hooks:
     - location: scripts/clean_instance.sh
       timeout: 6000
       runas: root
+   AfterInstall:
+    - location: scripts/install_os_dependencies.sh
+      timeout: 6000
+      runas: root
