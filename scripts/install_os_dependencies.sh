@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-apt-get install python-pip python-dev gettext
-apt-get install libpq-dev
-apt-get install libjpeg-dev
+apt-get install -y python-pip python-dev gettext
+apt-get install -y libpq-dev
+apt-get install -y libjpeg-dev
