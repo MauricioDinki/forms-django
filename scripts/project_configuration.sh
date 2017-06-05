@@ -6,3 +6,5 @@ python manage.py makemigrations
 python manage.py migrate
 cd /home/ubuntu/
 cp -rf /home/ubuntu/forms/deploy /home/ubuntu/
+sudo cp /home/ubuntu/forms/deploy/forms /etc/nginx/sites-enabled
+sudo systemctl restart nginx
