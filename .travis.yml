@@ -19,8 +19,8 @@ deploy:
   bucket: django-forms
   region: us-west-2
 - provider: codedeploy
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
   bucket: django-forms
   key: latest.zip
   bundle_type: zip
