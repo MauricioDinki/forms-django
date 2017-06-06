@@ -7,7 +7,6 @@ from boto.s3.key import Key
 LOCAL_PATH = './'
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-print "La llave es %s" % AWS_ACCESS_KEY_ID
 bucket_name = 'django-forms'
 # connect to the bucket
 conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
