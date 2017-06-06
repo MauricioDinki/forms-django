@@ -3,3 +3,5 @@
 app/migrations/
 .venv/
 *.DS_Store
+.env
+enviroment
