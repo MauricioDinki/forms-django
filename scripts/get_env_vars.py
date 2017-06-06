@@ -10,4 +10,4 @@ bucket_name = 'django-forms'
 conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 bucket = conn.get_bucket(bucket_name)
 k = Key(bucket, 'enviroment')
-k.get_contents_to_filename('.env')
+k.get_contents_to_filename('./.env')
