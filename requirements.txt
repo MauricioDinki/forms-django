@@ -1,2 +1,4 @@
 Django==1.7
 gunicorn==19.7.1
+django-storages==1.5.2
+boto==2.47.0
