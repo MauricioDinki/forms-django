@@ -2,3 +2,4 @@
 *.sqlite3
 app/migrations/
 .venv/
+*.DS_Store
