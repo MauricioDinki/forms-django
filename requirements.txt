@@ -2,3 +2,5 @@ Django==1.7
 gunicorn==19.7.1
 django-storages==1.5.2
 boto==2.47.0
+django-dotenv==1.4.1
+django-environ==0.4.3
