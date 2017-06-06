@@ -8,7 +8,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 import os
+import environ
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+env = environ.Env()
 
 SECRET_KEY = '$+ybuwq*b2j=t%3mq&*n@lsr_#y7k9)n3js1vrth+6)p$t3wj0'
 
@@ -25,6 +28,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'app',
 )
 
@@ -59,7 +63,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_S3_HOST = env("AWS_S3_HOST")
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+STATICFILES_STORAGE = 'app.custom_storages.StaticStorage'
+STATIC_URL = env("STATIC_URL")
+
+DEFAULT_FILE_STORAGE = 'app.custom_storages.MediaStorage'
+MEDIA_URL = env("MEDIA_URL")
