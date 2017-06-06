@@ -4,7 +4,7 @@ upstream forms {
 
 server {
     listen 80;
-    server_name forms.pinchef.com;
+    server_name localhost;
 
     client_max_body_size 4G;
     keepalive_timeout 60s;
