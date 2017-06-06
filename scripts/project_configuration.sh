@@ -6,3 +6,4 @@ mv enviroment .env
 python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic --noinput
+echo "Hi"
