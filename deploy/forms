@@ -4,7 +4,7 @@ upstream forms {
 
 server {
     listen 80;
-    server_name 54.200.102.46;
+    server_name _;
 
     client_max_body_size 4G;
     keepalive_timeout 60s;
